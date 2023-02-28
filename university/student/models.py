@@ -28,10 +28,11 @@ class Student(models.Model):
 class Student_Subject (models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     student= models.ForeignKey(Student,on_delete=models.CASCADE)
-    note_ds = models.DecimalField(max_digits=4,decimal_places=2,null=True)
-    note_ex = models.DecimalField(max_digits=4,decimal_places=2,null=True)
-    def moy(self):
-        return self.note_ds * 0.4 + self.note_ex * 0.6
+    note_ds = models.FloatField(null=True)
+    note_ex = models.FloatField(null=True)
+    @property
+    def moyenne(self):
+        return self.note_ds*0.4 + self.note_ex*0.6
     def __str__(self):
         return f'{self.student} -> {self.subject}'
     
