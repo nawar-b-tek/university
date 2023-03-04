@@ -16,7 +16,8 @@ def home(request):
 def student_home(request):
      query_set1 = Student.objects.filter(student_profile=request.user).first()
      query_set2 = Student_Subject.objects.filter(student=query_set1)
-     return render(request,'student_homepage.html',{'subs' : query_set2})
+     print('!!!!!!!!',query_set1)
+     return render(request,'student_homepage.html',{'subs' : query_set2,'user':query_set1})
 
 
 
