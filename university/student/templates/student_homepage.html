@@ -35,32 +35,37 @@
 </center>
 
 <body> 
+    <div class="navbar">
+        <a href="{% url 'student_resultat' %}">Resultat</a>
+        <a href="{% url 'student_emploi' %}">Emploi</a>
+    </div>
        <h3> voici vos resultat pour votre année {{user.student_classes}} :</h3> 
     <div class="container w-50 pt-5">
         <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>matiere</th>
-                <th>note_ds</th>
-                <th>note_examen</th>
-                <th>moyenne</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-              {%  for i in subs %}
-              <tr>
-                     <td>{{i.subject}}</td>
-                     <td>{{i.note_ds}}</td>
-                     <td> {{i.note_ex}}</td>
-                     <td>{{i.moyenne|floatformat:2}}</td>
-              </tr>
-             {% endfor %}
-          
-        </tbody>
-       
-        </tfoot>
-        </table>  
+            <thead>
+                <tr>
+                    <th>matiere</th>
+                    <th>note_ds</th>
+                    <th>note_examen</th>
+                    <th>moyenne</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for subject in notes %}
+                <tr>
+                  <td>{{ subject.subject }}</td>
+                    <td>{{subject.note_ds }}</td>
+                    <td>{{ subject.note_ex }}</td>
+                    <td>{{ subject.moyenne|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+              
+            </tbody>
+            </tfoot>
+        </table>
+        
+        
     </div>
   
 
