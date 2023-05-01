@@ -7,59 +7,42 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="style.css" />
 
     <script defer src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script
-      defer
-      src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script
-      defer
-      src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    <script defer src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script defer src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
     <script defer src="script.js"></script>
+    <style>
+      .pdf-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 75%; /* Adjust this value based on the aspect ratio you want */
+        overflow: hidden;
+      }
 
-    <title>Emploie</title>
+      .pdf-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+    <title>Emploi</title>
   </head>
-
+  {% include 'navbar.html' %}
   <body>
-    <div class="'container w-100 pt-5">
-      <table id="example" class="table table-striped" style="width: 100%">
-        <thead>
-          <tr>
-            <th>CPI2</th>
-            <th>Lundi</th>
-            <th>Mardi</th>
-            <th>Mercredi</th>
-            <th>Jeudi</th>
-            <th>Vendredi</th>
-            <th>Samedi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>9-11</td>
-
-            <td>Architecture</td>
-            <td>anglais</td>
-            <td>Python</td>
-            <td>prog C</td>
-            <td>Français</td>
-            <td>python</td>
-          </tr>
-          <tr>
-            <td>12-16</td>
-            <td>math</td>
-            <td>geo</td>
-            <td>hist</td>
-            <td>phy</td>
-            <td>anglais</td>
-            <td>prog C</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container pt-5">
+      {% load static %} {% if timetable_file %}
+      <div class="pdf-container">
+        <iframe class="pdf-iframe" src="{% static '/'|add:timetable_file %}" frameborder="0"> </iframe>
+      </div>
+      {% else %}
+      <p>No timetable found for your class.</p>
+      {% endif %}
     </div>
   </body>
 </html>
