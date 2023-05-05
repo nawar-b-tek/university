@@ -1,6 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from student.models import Student_Subject, Student, Teacher, Classes, Subject
+from django.conf import settings
+import os
+
+def get_timetable_file(class_name):
+    timetable_path = 'timetables'  # Change this line
+    timetable_files = os.listdir(os.path.join(settings.BASE_DIR, 'student', 'static', timetable_path))  # Change this line
+
+    for file in timetable_files:
+        if class_name in file:
+            return os.path.join(timetable_path, file)
+
+    return None
+
 
 
 def home(request):
@@ -15,9 +28,28 @@ def home(request):
 @login_required
 @user_passes_test(lambda u: u.is_student)
 def student_resultat(request):
-    query_set1 = Student.objects.filter(student_profile=request.user).first()
-    query_set2 = Student_Subject.objects.filter(student=query_set1)
-    return render(request, 'student_homepage.html', {'notes': query_set2, 'user': query_set1})
+    student = Student.objects.filter(student_profile=request.user).first()
+    student_subjects = Student_Subject.objects.filter(student=student)
+    all_subjects = student.student_classes.matiere.all()
+
+    subject_grades = {}
+
+    for subject in all_subjects:
+        subject_grades[subject.libelle] = {
+            'note_ds': None,
+            'note_ex': None,
+            'moyenne': None,
+        }
+
+    for subject_grade in student_subjects:
+        subject_grades[subject_grade.subject.libelle] = {
+            'note_ds': subject_grade.note_ds,
+            'note_ex': subject_grade.note_ex,
+            'moyenne': subject_grade.moyenne,
+        }
+
+    return render(request, 'student_homepage.html', {'subject_grades': subject_grades, 'user': student})
+
 
 
 @login_required
