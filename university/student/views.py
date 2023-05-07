@@ -114,6 +114,9 @@ def teacher_note(request, classe, subject):
 @login_required
 @user_passes_test(lambda u: u.is_student)
 def student_emploi(request):
-    query_set1 = Student.objects.filter(student_profile=request.user).first()
-    query_set2 = Student_Subject.objects.filter(student=query_set1)
-    return render(request, 'emploi.html')
+    student = Student.objects.get(student_profile=request.user)
+    timetable_file = get_timetable_file(student.student_classes.libelle)
+    context = {
+        'timetable_file': timetable_file,
+    }
+    return render(request, 'emploi.html', context)
